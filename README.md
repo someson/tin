@@ -1,4 +1,6 @@
-# [Confirmation of foreign VAT identification numbers](http://www.bzst.de)
+# Confirmation of foreign VAT identification numbers
+
+[![Build Status](https://travis-ci.org/someson/tin.svg?branch=master)](https://travis-ci.org/someson/tin)
 
 ## API Documentation
 

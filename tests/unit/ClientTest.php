@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use DG\BypassFinals;
 use Codeception\Test\Unit;
 use Codeception\Util\HttpCode;
 use GuzzleHttp\Client as GuzzleClient;
@@ -16,28 +15,12 @@ class ClientTest extends Unit
     /** @var \UnitTester */
     protected $tester;
 
-    protected function _before()
-    {
-        BypassFinals::enable();
-    }
-
     /**
      * @throws \ReflectionException
      */
     public function testShouldHaveEndpoint(): void
     {
         $tinClient = new TinClient();
-
-        // https://3v4l.org/lqZBd
-        /*
-        function inspect($object, $property) {
-            return (function () use ($property) {
-                return $this->$property;
-            })->call($object);
-        }
-        $endpoint = inspect($tinClient, '_httpClient');
-        */
-
         $reflection = new \ReflectionClass($tinClient);
         $property = $reflection->getProperty('_httpClient');
         $property->setAccessible(true);

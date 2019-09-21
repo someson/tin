@@ -1,4 +1,4 @@
-<?php // ./vendor/bin/codecept run unit library/tests/unit/TIN/ResponseTest -c library --env=de -d
+<?php
 
 namespace Tests\Unit;
 

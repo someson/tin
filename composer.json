@@ -11,10 +11,7 @@
         "tolerance/tolerance": "^0.4.2"
     },
     "require-dev": {
-        "codeception/codeception": "^3",
-        "codeception/specify": "^0.4.6",
-        "codeception/verify": "^0.4",
-        "dg/bypass-finals": "^1.1"
+        "codeception/codeception": "^3"
     },
     "authors": [
         {
