@@ -5,7 +5,7 @@
     "keywords": ["tin", "evatr", "vat"],
     "type": "library",
     "require": {
-        "php": "^7",
+        "php": ">=7.1",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6",
         "tolerance/tolerance": "^0.4.2"
