@@ -1,0 +1,24 @@
+dist: trusty
+
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+install:
+  - composer self-update
+  - composer install --no-interaction --prefer-source --dev
+
+before_script:
+  - php codecept build
+
+script:
+  - vendor/bin/codecept run --coverage --coverage-xml --coverage-html
