@@ -1,0 +1,39 @@
+{
+    "name": "someson/tin",
+    "description": "TIN (Taxpayer Identification Number) online check handler",
+    "license": "MIT",
+    "keywords": ["tin", "evatr", "vat"],
+    "type": "library",
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^6",
+        "tolerance/tolerance": "^0.4.2"
+    },
+    "require-dev": {
+        "codeception/codeception": "^3",
+        "codeception/specify": "^0.4.6",
+        "codeception/verify": "^0.4",
+        "dg/bypass-finals": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "someson",
+            "email": "somevov4ik@gmail.com"
+        }
+    ],
+    "suggest": {
+        "ext-curl": "*",
+        "ext-intl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Someson\\TIN\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Someson\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}
