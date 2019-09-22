@@ -32,12 +32,9 @@ class Response
         if (! preg_match_all($reg, $body, $matches)) {
             throw new Exceptions\UnexpectedValueException('Parsing of response failed');
         }
-        if (! $map = array_combine($matches[1], $matches[2])) {
-            throw new Exceptions\UnexpectedValueException('Parsing of response failed');
-        }
         $this->_result = array_map(function($item) {
             return $item ?: null;
-        }, $map);
+        }, array_combine($matches[1], $matches[2]));
         $this->_resultCode = (int) ($this->_result['ErrorCode'] ?? 0);
 
         $className = sprintf('%s\Translations\\%s', __NAMESPACE__, $lang);
@@ -98,7 +95,7 @@ class Response
             }
             return $this->_verbose($messages[$message[$this->_resultCode]], $this->_locale);
         }
-        return '[Unknown code]';
+        return '[Unknown return code]';
     }
 
     /**
@@ -110,12 +107,10 @@ class Response
     {
         $details = $this->getDetails();
         if ($from = $details->getValidity()->from()) {
-            $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT);
-            $from = $formatter->format($from->getTimestamp());
+            $from = $this->_formatDate($from->getTimestamp(), $locale);
         }
         if ($till = $details->getValidity()->till()) {
-            $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT);
-            $till = $formatter->format($till->getTimestamp());
+            $till = $this->_formatDate($till->getTimestamp(), $locale);
         }
         $replaces = [
             '%validFrom%' => $from,
@@ -124,5 +119,16 @@ class Response
             '%TIN%' => $details->getTIN(),
         ];
         return str_replace(array_keys($replaces), array_values($replaces), $message);
+    }
+
+    /**
+     * @param int $timestamp
+     * @param string $locale
+     * @return string
+     */
+    protected function _formatDate(int $timestamp, string $locale): string
+    {
+        $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT);
+        return $formatter->format($timestamp);
     }
 }

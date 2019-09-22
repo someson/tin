@@ -80,15 +80,15 @@ class Params implements \Countable
 
     public function __get($name)
     {
-        return self::$_schema[$name] ?? null;
+        return $this->_collection[$name] ?? null;
     }
 
     public function __set($name, $value)
     {
-        if (isset(self::$_schema[$name])) {
-            $this->_collection[$name] = $value;
+        if (! isset(self::$_schema[$name])) {
+            throw new Exceptions\UnexpectedValueException(sprintf('Param [%s] unknown', $name));
         }
-        throw new Exceptions\UnexpectedValueException(sprintf('Param [%s] unknown', $name));
+        $this->_collection[$name] = $value;
     }
 
     public function __isset($name)

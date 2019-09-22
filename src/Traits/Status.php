@@ -37,15 +37,15 @@ trait Status
      */
     public function verbose(?string $code = null): ?string
     {
-        if (! $code) {
-            return null;
-        }
         static $types = [
             'A' => 'MATCH',
             'B' => 'NOT_MATCH',
             'C' => 'NOT_REQUESTED',
             'D' => 'UNDISCLOSED',
         ];
-        return isset($types[$code]) ? ($this->translations[$types[$code]] ?? null) : null;
+        if (! isset($code, $types[$code], $this->translations[$types[$code]])) {
+            return null;
+        }
+        return $this->translations[$types[$code]];
     }
 }

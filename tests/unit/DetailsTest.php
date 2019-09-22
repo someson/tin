@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Codeception\Test\Unit;
+use Someson\TIN\Resource\Item;
 use Someson\TIN\Translations\de;
 use Someson\TIN\Resource\Details;
 
@@ -82,6 +83,11 @@ class DetailsTest extends Unit
 
         $this->assertEquals($address->getStreetStatus(false), 'C');
         $this->assertEquals($address->getStreetStatus(), 'nicht angefragt');
+    }
+
+    public function testStatusCodeCanBeNotSet(): void
+    {
+        $this->assertNull((new Item())->verbose());
     }
 
     public function _validResponseFixture(): array

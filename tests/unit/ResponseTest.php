@@ -7,6 +7,7 @@ use Codeception\Util\HttpCode;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
 use Someson\TIN\Client as TinClient;
+use Someson\TIN\Params as TinParams;
 use Someson\TIN\Response as TinResponse;
 use Someson\TIN\Exceptions\{ UnexpectedValueException, LengthException, RuntimeException };
 
@@ -74,10 +75,25 @@ class ResponseTest extends Unit
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
         );
-        $response = $this->tinClient->request('any', [], 'de');
+        $response = $this->tinClient->verify(new TinParams([
+            'UstId_1' => 'DE123456789',
+            'UstId_2' => 'DE789456132',
+        ]));
 
         /** @noinspection UnnecessaryAssertionInspection */
         $this->assertInstanceOf(TinResponse::class, $response);
+        $this->assertEquals($response->getType(), $response::SIMPLE);
+    }
+
+    public function testMustHandleUnknownReturnCode(): void
+    {
+        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(0));
+        $this->clientProperty->setValue(
+            $this->tinClient,
+            $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
+        );
+        $response = $this->tinClient->request('any', [], 'de');
+        $this->assertEquals('[Unknown return code]', $response->getMessage());
     }
 
     public function testTranslationMustBeLoaded(): void
@@ -103,6 +119,22 @@ class ResponseTest extends Unit
         );
         $response = $this->tinClient->request('any', [], 'de');
         $this->assertEquals(true, $response->isValid());
+    }
+
+    public function testCommonMessageShouldBeReturned(): void
+    {
+        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(213));
+        $this->clientProperty->setValue(
+            $this->tinClient,
+            $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
+        );
+        $response = $this->tinClient->request('any', [], 'de');
+        $this->assertEquals(false, $response->isValid());
+        $this->assertEquals('Die Validierung der Umsatzsteuer-Identifikationsnummer ist fehlgeschlagen. Bitte prüfe deine Eingabe oder versuche es zu einem späteren Zeitpunkt noch einmal.', $response->getMessage());
+
+        $response = $this->tinClient->request('any', [], 'en');
+        $this->assertEquals(false, $response->isValid());
+        $this->assertEquals('The validation of the VAT identification number failed. Please check your entry or try again later.', $response->getMessage());
     }
 
     public function _validResponseFixture(int $code): string

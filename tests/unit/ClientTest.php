@@ -6,9 +6,8 @@ use Codeception\Test\Unit;
 use Codeception\Util\HttpCode;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
-use Someson\TIN\Params;
 use Someson\TIN\Client as TinClient;
-use Someson\TIN\Exceptions\{ UnexpectedValueException, LengthException, DomainException };
+use Someson\TIN\Exceptions\LengthException;
 
 class ClientTest extends Unit
 {
@@ -29,40 +28,6 @@ class ClientTest extends Unit
         $this->assertEquals(TinClient::BASEURI, $endpoint->getConfig('base_uri'));
     }
 
-    public function testParamsCanThrowExceptions(): void
-    {
-        $this->tester->expectThrowable(UnexpectedValueException::class, function() {
-            new Params([]);
-        });
-        $this->tester->expectThrowable(DomainException::class, function() {
-            new Params([
-                'UstId_1' => 'DE123456789',
-                'UstId_2' => 'DE789456132',
-                'Druck' => true,
-            ]);
-        });
-    }
-
-    public function testParamsMustBeNotEmpty(): void
-    {
-        $params = new Params([
-            'UstId_1' => 'DE123456789',
-            'UstId_2' => 'DE789456132',
-        ]);
-        $this->assertNotEmpty($params->getCollection());
-    }
-
-    public function testParamsShouldBeDescribable(): void
-    {
-        $params = new Params([
-            'UstId_1' => 'DE123456789',
-            'UstId_2' => 'DE789456132',
-        ]);
-        foreach ($params->getCollection() as $description) {
-            $this->assertNotEquals('[unknown]', $description);
-        }
-    }
-
     /**
      * @throws \ReflectionException
      */
@@ -78,7 +43,6 @@ class ClientTest extends Unit
             $tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $response])
         );
-
         $this->tester->expectThrowable(LengthException::class, function() use ($tinClient) {
             $tinClient->request('any', [], 'de');
         });
