@@ -7,7 +7,7 @@ class Response
     public const SIMPLE = 1;
     public const QUALIFIED = 2;
 
-    /** @var object */
+    /** @var ?array */
     protected $_result;
 
     /** @var int */
@@ -30,11 +30,14 @@ class Response
                '<value><string>([^<]*)</string></value>\s*</data></array></value>\s*</param>#msi';
 
         if (! preg_match_all($reg, $body, $matches)) {
-            throw new Exceptions\UnexpectedValueException('parsing of response failed');
+            throw new Exceptions\UnexpectedValueException('Parsing of response failed');
+        }
+        if (! $map = array_combine($matches[1], $matches[2])) {
+            throw new Exceptions\UnexpectedValueException('Parsing of response failed');
         }
         $this->_result = array_map(function($item) {
             return $item ?: null;
-        }, array_combine($matches[1], $matches[2]));
+        }, $map);
         $this->_resultCode = (int) ($this->_result['ErrorCode'] ?? 0);
 
         $className = sprintf('%s\Translations\\%s', __NAMESPACE__, $lang);

@@ -21,3 +21,4 @@ before_script:
 
 script:
   - vendor/bin/codecept run --coverage --coverage-xml --coverage-html
+  - vendor/bin/phpstan analyse src --level=1 --no-interaction --no-progress

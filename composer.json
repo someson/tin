@@ -11,7 +11,8 @@
         "tolerance/tolerance": "^0.4.2"
     },
     "require-dev": {
-        "codeception/codeception": "^3"
+        "codeception/codeception": "^3",
+        "phpstan/phpstan": "^0.11.16"
     },
     "authors": [
         {

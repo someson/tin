@@ -31,17 +31,17 @@ final class Address
         return $this->_street->value;
     }
 
-    public function getPostalCodeStatus(bool $message = true): string
+    public function getPostalCodeStatus(bool $message = true): ?string
     {
         return $message ? $this->_postalCode->getStatusMessage() : $this->_postalCode->getStatusCode();
     }
 
-    public function getLocalityStatus(bool $message = true): string
+    public function getLocalityStatus(bool $message = true): ?string
     {
         return $message ? $this->_locality->getStatusMessage() : $this->_locality->getStatusCode();
     }
 
-    public function getStreetStatus(bool $message = true): string
+    public function getStreetStatus(bool $message = true): ?string
     {
         return $message ? $this->_street->getStatusMessage() : $this->_street->getStatusCode();
     }

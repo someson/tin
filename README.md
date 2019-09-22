@@ -1,6 +1,6 @@
 # Confirmation of foreign VAT identification numbers
 
-[![Build Status](https://travis-ci.org/someson/tin.svg?branch=master)](https://travis-ci.org/someson/tin)
+[![Build Status](https://travis-ci.org/someson/tin.svg?branch=master)](https://travis-ci.org/someson/tin) ![GitHub](https://img.shields.io/github/license/someson/tin) ![PHP from Travis config](https://img.shields.io/travis/php-v/someson/tin/master)
 
 ## API Documentation
 
@@ -51,6 +51,10 @@ echo $response->isValid() ? 'succeed' : 'failed';
 ### Tests
 
 `$ ./vendor/bin/codecept run`
+
+### Static analyzer
+
+`$ ./vendor/bin/phpstan analyse src --level max`
 
 ## Useful links
 

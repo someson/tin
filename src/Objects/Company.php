@@ -11,7 +11,7 @@ final class Company
         Status::__construct as private __constructStatus;
     }
 
-    /** @var string */
+    /** @var ?string */
     private $_name;
 
     /** @var Address */

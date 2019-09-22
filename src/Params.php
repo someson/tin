@@ -80,7 +80,7 @@ class Params implements \Countable
 
     public function __get($name)
     {
-        return $this->_params[$name] ?? null;
+        return self::$_schema[$name] ?? null;
     }
 
     public function __set($name, $value)

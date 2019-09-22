@@ -10,7 +10,7 @@ final class Item
         Status::__construct as private __constructStatus;
     }
 
-    /** @var string */
+    /** @var string|null */
     public $value;
 
     /**

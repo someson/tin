@@ -20,10 +20,10 @@ final class Details
 
     /**
      * Details constructor.
-     * @param array $details
+     * @param array|null $details
      * @param array $messages
      */
-    public function __construct(array $details, array $messages)
+    public function __construct(?array $details, array $messages)
     {
         $item = function(string $key) use ($details): ?string {
             return $details[$key] ?? null;
@@ -39,18 +39,20 @@ final class Details
                 new Item($item('Strasse'), $item('Erg_Str'), $messages)
             )
         );
-        if ($item('Datum') && $item('Uhrzeit')) {
-            $this->_datetime = \DateTime::createFromFormat('d.m.Y H:i:s',
-                sprintf('%s %s', $item('Datum'), $item('Uhrzeit'))
-            );
+
+        $date = $item('Datum');
+        $time = $item('Uhrzeit');
+        if ($date && $time) {
+            $this->_datetime = \DateTime::createFromFormat('d.m.Y H:i:s', sprintf('%s %s', $date, $time)) ?: null;
         }
-        if ($from = $item('Gueltig_ab')) {
-            $from = \DateTime::createFromFormat('d.m.Y H:i:s', $from . ' 00:00:00');
-        }
-        if ($till = $item('Gueltig_bis')) {
-            $till = \DateTime::createFromFormat('d.m.Y H:i:s', $till. ' 00:00:00');
-        }
-        $this->_validity = new Validity($from, $till);
+
+        $fromValue = $item('Gueltig_ab');
+        $from = $fromValue ? \DateTime::createFromFormat('d.m.Y H:i:s', $fromValue . ' 00:00:00') : null;
+
+        $tillValue = $item('Gueltig_bis');
+        $till = $tillValue ? \DateTime::createFromFormat('d.m.Y H:i:s', $tillValue . ' 00:00:00') : null;
+
+        $this->_validity = new Validity($from ?: null, $till ?: null);
     }
 
     public function getOwnTIN(): ?string

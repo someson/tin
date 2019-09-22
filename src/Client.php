@@ -2,6 +2,8 @@
 
 namespace Someson\TIN;
 
+use \GuzzleHttp\Client as GuzzleClient;
+
 final class Client
 {
     public const BASEURI = 'https://evatr.bff-online.de';
@@ -15,7 +17,7 @@ final class Client
      */
     public function __construct(?string $baseUri = null)
     {
-        $this->_httpClient = new \GuzzleHttp\Client([
+        $this->_httpClient = new GuzzleClient([
             'base_uri' => $baseUri ?? self::BASEURI,
         ]);
     }

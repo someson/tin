@@ -4,7 +4,7 @@ namespace Someson\TIN\Traits;
 
 trait Status
 {
-    /** @var string */
+    /** @var string|null */
     private $_statusCode;
 
     /** @var array */
@@ -33,9 +33,9 @@ trait Status
 
     /**
      * @param string|null $code
-     * @return string
+     * @return string|null
      */
-    public function verbose(?string $code = null): string
+    public function verbose(?string $code = null): ?string
     {
         if (! $code) {
             return null;
