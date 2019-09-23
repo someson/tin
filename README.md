@@ -1,6 +1,6 @@
 # Confirmation of foreign VAT identification numbers
 
-[![Build Status](https://travis-ci.org/someson/tin.svg?branch=master)](https://travis-ci.org/someson/tin) ![GitHub](https://img.shields.io/github/license/someson/tin) ![PHP from Travis config](https://img.shields.io/travis/php-v/someson/tin/master)
+[![Build Status](https://travis-ci.org/someson/tin.svg?branch=master)](https://travis-ci.org/someson/tin) ![GitHub](https://img.shields.io/github/license/someson/tin) ![PHP from Travis config](https://img.shields.io/travis/php-v/someson/tin/master) [![codecov](https://codecov.io/gh/someson/tin/branch/master/graph/badge.svg)](https://codecov.io/gh/someson/tin)
 
 ## API Documentation
 
