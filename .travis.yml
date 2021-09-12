@@ -22,3 +22,6 @@ before_script:
 script:
   - vendor/bin/codecept run --coverage --coverage-xml --coverage-html
   - vendor/bin/phpstan analyse src --level=1 --no-interaction --no-progress
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
