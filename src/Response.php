@@ -7,7 +7,7 @@ class Response
     public const SIMPLE = 1;
     public const QUALIFIED = 2;
 
-    /** @var ?array */
+    /** @var ?string[] */
     protected $_result;
 
     /** @var int */
@@ -34,7 +34,7 @@ class Response
         }
         $this->_result = array_map(function($item) {
             return $item ?: null;
-        }, array_combine($matches[1], $matches[2]));
+        }, (array) array_combine($matches[1], $matches[2]));
         $this->_resultCode = (int) ($this->_result['ErrorCode'] ?? 0);
 
         $className = sprintf('%s\Translations\\%s', __NAMESPACE__, $lang);
@@ -124,9 +124,9 @@ class Response
     /**
      * @param int $timestamp
      * @param string $locale
-     * @return string
+     * @return string|false
      */
-    protected function _formatDate(int $timestamp, string $locale): string
+    protected function _formatDate(int $timestamp, string $locale)
     {
         $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT);
         return $formatter->format($timestamp);

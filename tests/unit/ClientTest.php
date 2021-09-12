@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use Codeception\Test\Unit;
-use Codeception\Util\HttpCode;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
 use Someson\TIN\Client as TinClient;
@@ -38,7 +37,7 @@ class ClientTest extends Unit
         $property = $reflection->getProperty('_httpClient');
         $property->setAccessible(true);
 
-        $response = new Response(HttpCode::INTERNAL_SERVER_ERROR);
+        $response = new Response(500);
         $property->setValue(
             $tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $response])
@@ -47,7 +46,7 @@ class ClientTest extends Unit
             $tinClient->request('any', [], 'de');
         });
 
-        $response = new Response(HttpCode::OK, [], '');
+        $response = new Response(200, [], '');
         $property->setValue(
             $tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $response])

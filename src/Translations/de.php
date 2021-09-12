@@ -6,6 +6,7 @@ use Someson\TIN\Interfaces\Translatable;
 
 final class de implements Translatable
 {
+    /** @var string */
     public static $locale = 'de_DE';
 
     /**

@@ -3,12 +3,13 @@
 namespace Someson\TIN;
 
 use \GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\{ ConnectException, GuzzleException };
 
 final class Client
 {
     public const BASEURI = 'https://evatr.bff-online.de';
 
-    /** @var \GuzzleHttp\Client */
+    /** @var GuzzleClient */
     private $_httpClient;
 
     /**
@@ -24,11 +25,10 @@ final class Client
 
     /**
      * @param string $endpoint
-     * @param array $query
+     * @param string[] $query
      * @param string $lang
      * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \GuzzleHttp\Exception\ConnectException
+     * @throws GuzzleException|ConnectException
      */
     public function request(string $endpoint, array $query, string $lang): Response
     {
@@ -44,7 +44,7 @@ final class Client
      * @param Params $params
      * @param string $lang
      * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function verify(Params $params, string $lang = 'de'): Response
     {

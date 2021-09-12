@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use Codeception\Test\Unit;
-use Codeception\Util\HttpCode;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Utils;
 use Someson\TIN\Client as TinClient;
 use Someson\TIN\Params as TinParams;
 use Someson\TIN\Response as TinResponse;
@@ -31,7 +31,7 @@ class ResponseTest extends Unit
     protected function _before()
     {
         $this->tinClient = new TinClient();
-        $this->response = new Response(HttpCode::OK);
+        $this->response = new Response(200);
 
         $reflection = new \ReflectionClass($this->tinClient);
         $this->clientProperty = $reflection->getProperty('_httpClient');
@@ -40,16 +40,15 @@ class ResponseTest extends Unit
 
     public function testResponseCanThrowExceptions(): void
     {
-        $body = \GuzzleHttp\Psr7\stream_for();
         $this->clientProperty->setValue(
             $this->tinClient,
-            $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
+            $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody(Utils::streamFor(''))])
         );
         $this->tester->expectThrowable(LengthException::class, function() {
             $this->tinClient->request('any', [], 'de');
         });
 
-        $body = \GuzzleHttp\Psr7\stream_for('not empty, but not the expected xml pattern');
+        $body = Utils::streamFor('not empty, but not the expected xml pattern');
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -58,7 +57,7 @@ class ResponseTest extends Unit
             $this->tinClient->request('any', [], 'de');
         });
 
-        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(200));
+        $body = Utils::streamFor($this->_validResponseFixture(200));
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -70,7 +69,7 @@ class ResponseTest extends Unit
 
     public function testShouldReturnResponse(): void
     {
-        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(200));
+        $body = Utils::streamFor($this->_validResponseFixture(200));
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -87,7 +86,7 @@ class ResponseTest extends Unit
 
     public function testMustHandleUnknownReturnCode(): void
     {
-        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(0));
+        $body = Utils::streamFor($this->_validResponseFixture(0));
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -98,7 +97,7 @@ class ResponseTest extends Unit
 
     public function testTranslationMustBeLoaded(): void
     {
-        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(200));
+        $body = Utils::streamFor($this->_validResponseFixture(200));
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -112,7 +111,7 @@ class ResponseTest extends Unit
 
     public function testShouldBeValid(): void
     {
-        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(200));
+        $body = Utils::streamFor($this->_validResponseFixture(200));
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -123,7 +122,7 @@ class ResponseTest extends Unit
 
     public function testCommonMessageShouldBeReturned(): void
     {
-        $body = \GuzzleHttp\Psr7\stream_for($this->_validResponseFixture(213));
+        $body = Utils::streamFor($this->_validResponseFixture(213));
         $this->clientProperty->setValue(
             $this->tinClient,
             $this->createConfiguredMock(GuzzleClient::class, ['request' => $this->response->withBody($body)])
@@ -139,7 +138,6 @@ class ResponseTest extends Unit
 
     public function _validResponseFixture(int $code): string
     {
-        /** @noinspection PhpIncludeInspection */
         return require sprintf('%s/response_%u.php', FIXTURES, $code);
     }
 }

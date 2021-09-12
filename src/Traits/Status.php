@@ -4,16 +4,15 @@ namespace Someson\TIN\Traits;
 
 trait Status
 {
-    /** @var string|null */
+    /** @var ?string */
     private $_statusCode;
 
-    /** @var array */
+    /** @var string[] */
     public $translations;
 
     /**
-     * Status constructor.
-     * @param string|null $statusCode
-     * @param array $translations
+     * @param ?string $statusCode
+     * @param string[] $translations
      */
     public function __construct(?string $statusCode = null, array $translations = [])
     {
@@ -32,8 +31,8 @@ trait Status
     }
 
     /**
-     * @param string|null $code
-     * @return string|null
+     * @param ?string $code
+     * @return ?string
      */
     public function verbose(?string $code = null): ?string
     {

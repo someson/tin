@@ -4,9 +4,10 @@ namespace Someson\TIN;
 
 class Params implements \Countable
 {
-    /** @var array */
+    /** @var string[] */
     protected $_collection;
 
+    /** @var array[] */
     private static $_schema = [
         'UstId_1' => [
             'required' => true,
@@ -41,7 +42,7 @@ class Params implements \Countable
 
     /**
      * Params constructor.
-     * @param array $params
+     * @param string[] $params
      */
     public function __construct(array $params)
     {
@@ -68,6 +69,9 @@ class Params implements \Countable
         return isset(self::$_schema[$name]) ? self::$_schema[$name]['description'] : '[unknown]';
     }
 
+    /**
+     * @return string[]
+     */
     public function getCollection(): array
     {
         return $this->_collection;
@@ -78,12 +82,20 @@ class Params implements \Countable
         return \count($this->_collection);
     }
 
-    public function __get($name)
+    /**
+     * @param string $name
+     * @return string|null
+     */
+    public function __get(string $name)
     {
         return $this->_collection[$name] ?? null;
     }
 
-    public function __set($name, $value)
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set(string $name, $value): void
     {
         if (! isset(self::$_schema[$name])) {
             throw new Exceptions\UnexpectedValueException(sprintf('Param [%s] unknown', $name));
@@ -91,7 +103,11 @@ class Params implements \Countable
         $this->_collection[$name] = $value;
     }
 
-    public function __isset($name)
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function __isset(string $name)
     {
         return isset($this->_collection[$name]);
     }

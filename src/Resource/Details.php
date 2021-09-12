@@ -2,12 +2,16 @@
 
 namespace Someson\TIN\Resource;
 
+use DateTime;
 use Someson\TIN\Objects\{ Company, Address, Validity };
 
 final class Details
 {
-    /** @var null|string */
-    private $_tin, $_ownTin;
+    /** @var ?string */
+    private $_tin;
+
+    /** @var ?string */
+    private $_ownTin;
 
     /** @var Company */
     private $_company;
@@ -15,13 +19,12 @@ final class Details
     /** @var Validity */
     private $_validity;
 
-    /** @var null|\DateTime */
+    /** @var ?DateTime */
     private $_datetime;
 
     /**
-     * Details constructor.
-     * @param array|null $details
-     * @param array $messages
+     * @param ?string[] $details
+     * @param string[] $messages
      */
     public function __construct(?array $details, array $messages)
     {
@@ -43,14 +46,14 @@ final class Details
         $date = $item('Datum');
         $time = $item('Uhrzeit');
         if ($date && $time) {
-            $this->_datetime = \DateTime::createFromFormat('d.m.Y H:i:s', sprintf('%s %s', $date, $time)) ?: null;
+            $this->_datetime = DateTime::createFromFormat('d.m.Y H:i:s', sprintf('%s %s', $date, $time)) ?: null;
         }
 
         $fromValue = $item('Gueltig_ab');
-        $from = $fromValue ? \DateTime::createFromFormat('d.m.Y H:i:s', $fromValue . ' 00:00:00') : null;
+        $from = $fromValue ? DateTime::createFromFormat('d.m.Y H:i:s', $fromValue . ' 00:00:00') : null;
 
         $tillValue = $item('Gueltig_bis');
-        $till = $tillValue ? \DateTime::createFromFormat('d.m.Y H:i:s', $tillValue . ' 00:00:00') : null;
+        $till = $tillValue ? DateTime::createFromFormat('d.m.Y H:i:s', $tillValue . ' 00:00:00') : null;
 
         $this->_validity = new Validity($from ?: null, $till ?: null);
     }
@@ -75,7 +78,7 @@ final class Details
         return $this->_validity;
     }
 
-    public function getDateTime(): ?\DateTime
+    public function getDateTime(): ?DateTime
     {
         return $this->_datetime;
     }

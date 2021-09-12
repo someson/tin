@@ -6,13 +6,13 @@ interface Translatable
 {
     /**
      * Pack of Status messages [A|B|C|D] for company attributes (name, address)
-     * @return array
+     * @return string[]
      */
     public static function status(): array;
 
     /**
      * Pack of response messages
-     * @return array
+     * @return string[]
      */
     public static function message(): array;
 

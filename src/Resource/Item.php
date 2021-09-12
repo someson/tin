@@ -10,14 +10,13 @@ final class Item
         Status::__construct as private __constructStatus;
     }
 
-    /** @var string|null */
+    /** @var ?string */
     public $value;
 
     /**
-     * Item constructor.
-     * @param string|null $value
-     * @param string|null $statusCode
-     * @param array $translations
+     * @param ?string $value
+     * @param ?string $statusCode
+     * @param string[] $translations
      */
     public function __construct(?string $value = null, ?string $statusCode = null, array $translations = [])
     {

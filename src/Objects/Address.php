@@ -7,7 +7,13 @@ use Someson\TIN\Resource\Item;
 final class Address
 {
     /** @var Item */
-    private $_postalCode, $_locality, $_street;
+    private $_postalCode;
+
+    /** @var Item */
+    private $_locality;
+
+    /** @var Item */
+    private $_street;
 
     public function __construct(Item $postalCode, Item $locality, Item $street)
     {
